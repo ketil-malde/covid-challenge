@@ -1,0 +1,56 @@
+[x] 1. build dictionary table - [[mkdict.py]]
+
+
+1.5 Word importance measure [[word_importance.py]]
+
+  NB: important words: words that help to predict abstract from body
+  text.  P(abstract dict|body dict)?
+
+  Value = (w in abs and body)* #articles/#articles with word  (log sum)
+  --- occurences together vs occurences alone?
+  bayesian score:
+
+    P (match | w in abs & w in body)
+    = p(w in abs & w in body | match) / p(w in abs || w in body)     * p(match) [prior]
+  p(match) = 1/#articles,   p(w in abs & w in body | match or all) = count up
+
+  #occ(abs+body)/#art = num (need to square this, why?)
+  ---- no count #occ(abs)/#art + #occ(body)/#art - #occ(abs+body)  -- denom
+  #occ(abs)/#art * #occ(body)/#art
+  
+  i.e. word score = #occ(abs+body)/(#occ(abs)*#occ(body))  
+  nah.  Squared?  No I think it might be correct: rare words are more useful.
+
+2. build co-occurrence table
+
+3. build suffix tree
+
+4. suffix tree search
+
+5. embedding and suffix tree search
+
+
+How:
+
+- use citations
+  (given a citation, estimate support/non-support)
+
+6. build a database of BIBREFs and preceding sentences.
+
+- use the abstracts
+  (again: match/mismatch?)
+
+** Data cleaning
+
+Line numbers?
+
+- CC-BY-NC 4.0 International license It is made available under a
+  author/funder, who has granted medRxiv a license to display the
+  preprint in perpetuity.
+- is the (which was not peer-reviewed) The copyright holder for this
+  preprint . https://doi.org/10.1101/2020.02.04.20020479 doi: medRxiv
+  preprint
+- All rights reserved. No reuse allowed without permission. [...]
+- The copyright holder for this preprint (which was not peer-reviewed)
+  is the author/funder. .
+  
