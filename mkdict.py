@@ -10,18 +10,15 @@ def loadfile(f):
 
 # count words in a string (optionally add to existing dict)import string
 
-def tr(line): return line.translate(str.maketrans('', '', '(),'))
-def mkdict(s, freq = {}):
-    f = freq
+def tr(line): return line.translate(str.maketrans('', '', '(), '))
+def add_par_dict(s, freq):
     for w in s.split():
-        f[tr(w)] = f.get(w,0)+1  # increment by one, filter bad chars
-    return f
+        w1 = tr(w)                   # filter bad chars
+        freq[w1] = freq.get(w1,0)+1  # increment by one
         
-def get_dict(x, section='abstract', freq = {}):
-    f = freq
+def add_section_dict(x, section, freq):
     for p in x[section]:
-        f = mkdict(p['text'], f)
-    return f
+        add_par_dict(p['text'], freq)
 
 # prettyprint dict
 def print_dict(d):
@@ -37,14 +34,24 @@ def process_all():
         for f in os.listdir(C.DATA+d+'/'+d):
             print('.', end='', flush=True)
             x = loadfile(C.DATA+d+'/'+d+'/'+f)
-            af = get_dict(x, 'abstract', af)
-            bf = get_dict(x, 'body_text', bf)
+            add_section_dict(x, 'abstract', af)
+            add_section_dict(x, 'body_text', bf)
         print()
     return af, bf
         
 # testing
-# x = loadfile(C.DATA+'biorxiv_medrxiv/biorxiv_medrxiv/00d16927588fb04d4be0e6b269fc02f0d3c2aa7b.json')
+test1 = loadfile(C.DATA+'biorxiv_medrxiv/biorxiv_medrxiv/00d16927588fb04d4be0e6b269fc02f0d3c2aa7b.json')
+test2 = loadfile(C.DATA+'biorxiv_medrxiv/biorxiv_medrxiv/0015023cc06b5362d332b3baf348d11567ca2fbb.json')
 
+def test():
+    a = {}
+    add_section_dict(test1, section='abstract', freq=a)
+    add_section_dict(test2, section='abstract', freq=a)
+    b = {}
+    add_section_dict(test2, section='abstract', freq=b)
+    add_section_dict(test1, section='abstract', freq=b)
+    assert(a==b)
+    
 def process_and_save():
     a, b = process_all()
     with open("abstracts_dict.json","w") as f:

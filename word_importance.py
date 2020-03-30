@@ -24,8 +24,10 @@ def process_all():
         for f in os.listdir(C.DATA+d+'/'+d):
             print('.', end='', flush=True)
             x = M.loadfile(C.DATA+d+'/'+d+'/'+f)
-            af = M.get_dict(x, 'abstract', {})  # why the FUCK is this necessary?
-            bf = M.get_dict(x, 'body_text', {})
+            af = {}
+            M.add_section_dict(x, 'abstract', af)
+            bf = {}
+            M.add_section_dict(x, 'body_text', bf)
             for w in af.keys():
                 incr(count_abs, w)  # 13 sec
                 if w in bf.keys():
@@ -36,7 +38,7 @@ def process_all():
     scores = {}
     for w in count_abs.keys():
         scores[w] = log(1+count_match.get(w,0)) - log(1+count_abs.get(w,0)) - log(1+count_body.get(w,0))
-       # print(w,s,count_match.get(w,0),count_abs.get(w,0),1+count_body.get(w,0))
+        # print(w,s,count_match.get(w,0),count_abs.get(w,0),1+count_body.get(w,0))
     return scores
 
 # testing
