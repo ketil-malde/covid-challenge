@@ -36,17 +36,24 @@ def process_all():
                 incr(count_body, w) # +22 sec
 
     scores = {}
-    for w in count_abs.keys():
-        scores[w] = log(1+count_match.get(w,0)) - log(1+count_abs.get(w,0)) - log(1+count_body.get(w,0))
-        # print(w,s,count_match.get(w,0),count_abs.get(w,0),1+count_body.get(w,0))
-    return scores
+    counts = {}
+    for w in count_match.keys():
+        cm, ca, cb = count_match.get(w,0), count_abs.get(w,0), count_body.get(w,0)
+        scores[w] = log(1+cm) - log(1+ca) - log(1+cb)
+        counts[w] = (cm, ca, cb) 
+    return scores, counts
 
 # testing
 # f = C.DATA+'/biorxiv_medrxiv/biorxiv_medrxiv/f734d47a423cbe54ec0cc9b2dee39470cf74fd9b.json'
 
 import json
-with open('scores.json','w') as f:
-    f.write(json.dumps(process_all()))
+def process_and_save():
+    ss, cs = process_all()
+    with open('scores.json','w') as f:
+        f.write(json.dumps(ss))
+    with open('counts.json','w') as f:
+        f.write(json.dumps(cs))
+            
 
 
         
