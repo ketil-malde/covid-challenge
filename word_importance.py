@@ -26,10 +26,8 @@ def process_all():
             print('.', end='', flush=True)
             art_ct = art_ct + 1
             x = M.loadfile(C.DATA+d+'/'+d+'/'+f)
-            af = {}
-            M.add_section_dict(x, 'abstract', af)
-            bf = {}
-            M.add_section_dict(x, 'body_text', bf)
+            af = M.get_section_dict(x, 'abstract')
+            bf = M.get_section_dict(x, 'body_text')
             for w in af.keys():
                 incr(count_abs, w)  # 13 sec
                 if w in bf.keys():

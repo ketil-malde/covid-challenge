@@ -20,6 +20,11 @@ def add_section_dict(x, section, freq):
     for p in x[section]:
         add_par_dict(p['text'], freq)
 
+def get_section_dict(x, sec):
+    res = {}
+    add_section_dict(x,sec,res)
+    return res
+
 # prettyprint dict
 def print_dict(d):
     for v, k in sorted(((v,k) for k,v in d.items()), reverse=True):
