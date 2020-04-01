@@ -39,28 +39,30 @@ def process_all():
         print('')
 
     scores = {}
-    counts = {}
     for w in count_match.keys():
         cm, ca, cb = count_match.get(w,0), count_abs.get(w,0), count_body.get(w,0)
         # likelihood of word in body/abstract vs likelihood of a random match
-        scores[w] = log(art_ct) + log(cm) - log(ca) - log(cb)  # match_keys => all >= 1
-        counts[w] = (cm, ca, cb)
-    return scores, counts
-
-
-def genscores(d,f): return { k : f(m,a,b) for k, (m,a,b) in d.items() }
+        posscore = log(art_ct) + log(cm) - log(ca) - log(cb)  # match_keys => all >= 1
+        negscore = log(art_ct) + log(art_ct-cm) - log(art_ct-ca) - log(art_ct-cb)
+        counts = (cm, ca, cb)
+        scores[w] = (posscore, negscore, counts)
+    return scores
 
 # testing
 # f = C.DATA+'/biorxiv_medrxiv/biorxiv_medrxiv/f734d47a423cbe54ec0cc9b2dee39470cf74fd9b.json'
 
 import json
 def process_and_save():
-    ss, cs = process_all()
+    ss = process_all()
     with open('scores.json','w') as f:
         f.write(json.dumps(ss))
-    with open('counts.json','w') as f:
-        f.write(json.dumps(cs))
-            
 
+def test():
+    process_and_save()
+    ss = M.loadfile('scores.json')
+    t  = M.sorted_list(ss)
 
-        
+    print(t[0:100])
+    print('')
+    print(t[-100:-1])
+
