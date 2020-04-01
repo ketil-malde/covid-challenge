@@ -18,11 +18,13 @@ def process_all():
     count_body = {}
 
     # abs_words = M.loadfile('abstracts_dict.json')
-    
+
+    art_ct = 0
     for d in C.DIRS:
         print(d, end=': ', flush=True)
         for f in os.listdir(C.DATA+d+'/'+d):
             print('.', end='', flush=True)
+            art_ct = art_ct + 1
             x = M.loadfile(C.DATA+d+'/'+d+'/'+f)
             af = {}
             M.add_section_dict(x, 'abstract', af)
@@ -34,13 +36,15 @@ def process_all():
                     incr(count_match, w) # +22 sec
             for w in bf.keys():  #  & abs_words.keys(): # intersection is slower +32 sec
                 incr(count_body, w) # +22 sec
+        print('')
 
     scores = {}
     counts = {}
     for w in count_match.keys():
         cm, ca, cb = count_match.get(w,0), count_abs.get(w,0), count_body.get(w,0)
-        scores[w] = log(1+cm) - log(1+ca) - log(1+cb)
-        counts[w] = (cm, ca, cb) 
+        # likelihood of word in body/abstract vs likelihood of a random match
+        scores[w] = log(art_ct) + log(cm) - log(ca) - log(cb)  # match_keys => all >= 1
+        counts[w] = (cm, ca, cb)
     return scores, counts
 
 # testing
