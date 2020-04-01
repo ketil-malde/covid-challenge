@@ -1,6 +1,7 @@
 import config as C
 import json
 import sys
+import nltk
 
 # Return a dictionary from one input file
 def loadfile(f):
@@ -10,11 +11,9 @@ def loadfile(f):
 
 # count words in a string (optionally add to existing dict)import string
 
-def tr(line): return line.translate(str.maketrans('', '', '(), '))
 def add_par_dict(s, freq):
-    for w in s.split():
-        w1 = tr(w)                   # filter bad chars
-        freq[w1] = freq.get(w1,0)+1  # increment by one
+    for w in nltk.word_tokenize(s):
+        freq[w] = freq.get(w,0)+1  # increment by one
         
 def add_section_dict(x, section, freq):
     for p in x[section]:
