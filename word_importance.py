@@ -47,6 +47,9 @@ def process_all():
         counts[w] = (cm, ca, cb)
     return scores, counts
 
+
+def genscores(d,f): return { k : f(m,a,b) for k, (m,a,b) in d.items() }
+
 # testing
 # f = C.DATA+'/biorxiv_medrxiv/biorxiv_medrxiv/f734d47a423cbe54ec0cc9b2dee39470cf74fd9b.json'
 
