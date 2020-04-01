@@ -51,6 +51,13 @@ def test():
     add_section_dict(test2, section='abstract', freq=b)
     add_section_dict(test1, section='abstract', freq=b)
     assert(a==b)
+
+def swap(tup):
+    (k,v) = tup
+    return (v,k)
+
+def sorted_list(d):
+    return sorted(list(d.items()), key = swap)
     
 def process_and_save():
     a, b = process_all()
