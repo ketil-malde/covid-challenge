@@ -1,0 +1,6 @@
+* Experiments with text mining
+
+Some tools and scripts useful for addressing the Kaggle COVID challenge.
+
+  https://www.kaggle.com/allen-institute-for-ai/CORD-19-research-challenge
+
