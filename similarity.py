@@ -11,13 +11,17 @@ def dist_txt(ss, x, y, xsec, ysec):
 
 def dist_dict(ss, xd, yd):
     score = 0
+    maxscore = 0
+    minscore = 0
     for (k,v) in xd.items():  # all words in first text
         pos_score, neg_score, _counts = ss.get(k,(0,0,None))
         if k in yd:
             score = score + pos_score
         else:
             score = score - neg_score
-    return score
+        maxscore = maxscore + pos_score
+        minscore = minscore - neg_score
+    return (score-minscore)/(maxscore-minscore)
 
 def test():
     t1 = M.test1
