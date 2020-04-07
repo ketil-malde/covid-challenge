@@ -4,11 +4,14 @@ import word_importance as W
 import mkdict as M
 import config as C
 
+# Calculate distance between two documents using specific sections
+# (See test function for how to use it)
 def dist_txt(ss, x, y, xsec, ysec):
     xd = M.get_section_dict(x,xsec)
     yd = M.get_section_dict(y,ysec)
     return dist_dict(ss, xd, yd)
 
+# helper function, calculate distance between dictionaries
 def dist_dict(ss, xd, yd):
     score = 0
     maxscore = 0
