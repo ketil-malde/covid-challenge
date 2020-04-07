@@ -27,26 +27,29 @@ def dist_dict(ss, xd, yd):
     if maxscore==minscore: return 0
     else: return (score-minscore)/(maxscore-minscore)
 
+# print a list of articles best matching the abstract
 import os
 def process_all():
     ss = M.loadfile('scores.json')
     abstracts = {}
+    bodies    = {}
     titles = {}
     for d in C.DIRS:
         print(d, end=': ', flush=True)
         for f in os.listdir(C.DATA+d+'/'+d):
             x = M.loadfile(C.DATA+d+'/'+d+'/'+f)
             abstracts[f] = M.get_section_dict(x, 'abstract')
+            bodies[f] = M.get_section_dict(x, 'body_text')
             titles[f] = x['metadata']['title']
         print('')
     # print titles of closest matching articles
     for f1, a1 in abstracts.items():
         print(titles[f1],':')
         sim = []
-        for f2, a2 in abstracts.items():
-            score = (dist_dict(ss, a1, a2), titles[f2])
+        for f2, b2 in bodies.items():
+            score = (dist_dict(ss, a1, b2), titles[f2])
             sim.append(score)
-        for t in sorted(sim, reverse=True)[1:4]:
+        for t in sorted(sim, reverse=True)[0:4]:
             print('- ',t)
     return None
 
