@@ -49,8 +49,8 @@ def process_all():
         for f2, b2 in bodies.items():
             score = (dist_dict(ss, a1, b2), titles[f2])
             sim.append(score)
-        for t in sorted(sim, reverse=True)[0:4]:
-            print('- ',t)
+        for s,t in sorted(sim, reverse=True)[0:4]:
+            print('- %.2f %s' %(s,t))
     return None
 
 def test():
@@ -67,3 +67,5 @@ def test():
     print('t1.abs vs t2.body_text', dist_txt(ss, t1, t2, 'abstract', 'body_text'))
     print('t2.abs vs t1.body_text', dist_txt(ss, t2, t1, 'abstract', 'body_text'))
     print('t2.abs vs t2.body_text', dist_txt(ss, t2, t2, 'abstract', 'body_text'))
+
+process_all()
